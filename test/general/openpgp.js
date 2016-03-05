@@ -2,7 +2,7 @@
 
 'use strict';
 
-var openpgp = typeof window !== 'undefined' && window.openpgp ? window.openpgp : require('../../dist/openpgp');
+var openpgp = typeof window !== 'undefined' && window.openpgp ? window.openpgp : require('../../src/openpgp');
 
 var sinon = require('sinon'),
   chai = require('chai'),
@@ -390,7 +390,7 @@ describe('OpenPGP.js public api tests', function() {
 
     it('should work in JS (with worker)', function(done) {
       openpgp.config.useNative = false;
-      openpgp.initWorker({ path:'../dist/openpgp.worker.js' });
+      openpgp.initWorker({ path:'../src/openpgp.worker.js' });
       var opt = {
         userIds: [{ name: 'Test User', email: 'text@example.com' }],
         numBits: 512
@@ -449,7 +449,7 @@ describe('OpenPGP.js public api tests', function() {
     describe('without Worker', tests);
 
     tryWorker('with Worker', tests, function() {
-      openpgp.initWorker({ path:'../dist/openpgp.worker.js' });
+      openpgp.initWorker({ path:'../src/openpgp.worker.js' });
     }, function() {
       openpgp.destroyWorker(); // cleanup worker in case of failure
     });

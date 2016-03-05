@@ -8,8 +8,8 @@
 
 'use strict';
 
-import aes from'./aes.js';
 import desModule from './des.js';
+import aes from './aes.js';
 import cast5 from './cast5.js';
 import twofish from './twofish.js';
 import blowfish from './blowfish.js';

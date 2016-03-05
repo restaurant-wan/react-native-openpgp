@@ -1,6 +1,6 @@
 'use strict';
 
-var openpgp = typeof window != 'undefined' && window.openpgp ? window.openpgp : require('../../dist/openpgp');
+var openpgp = typeof window != 'undefined' && window.openpgp ? window.openpgp : require('../../src/openpgp');
 
 var chai = require('chai'),
   expect = chai.expect;
@@ -190,5 +190,3 @@ describe("ASCII armor", function() {
   });
 
 });
-
- 

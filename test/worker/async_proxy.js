@@ -2,7 +2,7 @@
 
 'use strict';
 
-var openpgp = typeof window !== 'undefined' && window.openpgp ? window.openpgp : require('../../dist/openpgp');
+var openpgp = typeof window !== 'undefined' && window.openpgp ? window.openpgp : require('../../src/openpgp');
 
 var chai = require('chai'),
   expect = chai.expect;
@@ -36,7 +36,7 @@ var plaintext = 'short message\nnext line\n한국어/조선말';
 var pubKey;
 
 tryWorker('Async Proxy', tests, function() {
-  openpgp.initWorker({ path:'../dist/openpgp.worker.js' });
+  openpgp.initWorker({ path:'../src/openpgp.worker.js' });
   pubKey = openpgp.key.readArmored(pub_key).keys[0];
 }, function() {
   openpgp.destroyWorker();
@@ -46,8 +46,8 @@ function tests() {
 
   describe('Error handling', function() {
     it('Depleted random buffer in worker gives error', function (done) {
-      var wProxy = new openpgp.AsyncProxy({ path:'../dist/openpgp.worker.js' });
-      wProxy.worker = new Worker('../dist/openpgp.worker.js');
+      var wProxy = new openpgp.AsyncProxy({ path:'../src/openpgp.worker.js' });
+      wProxy.worker = new Worker('../src/openpgp.worker.js');
       wProxy.worker.onmessage = wProxy.onMessage.bind(wProxy);
       wProxy.seedRandom(10);
       wProxy.delegate('encrypt', { publicKeys:[pubKey], data:plaintext }).catch(function(err) {

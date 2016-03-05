@@ -40,7 +40,6 @@ Packetlist.prototype.read = function (bytes) {
     var packet = packets.newPacketFromTag(tag);
 
     this.push(packet);
-
     packet.read(parsed.packet);
   }
 };
@@ -107,7 +106,6 @@ Packetlist.prototype.filterByTag = function () {
       filtered.push(this[i]);
     }
   }
-
   return filtered;
 };
 

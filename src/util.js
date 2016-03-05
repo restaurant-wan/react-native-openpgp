@@ -520,7 +520,7 @@ export default {
       return;
     }
 
-    return require('crypto');
+    return null;
   },
 
   /**

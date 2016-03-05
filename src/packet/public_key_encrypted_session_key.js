@@ -152,7 +152,6 @@ PublicKeyEncryptedSessionKey.prototype.decrypt = function (key) {
     this.encrypted).toBytes();
 
   var checksum = util.readNumber(util.str2Uint8Array(result.substr(result.length - 2)));
-
   var decoded = crypto.pkcs1.eme.decode(result);
 
   key = util.str2Uint8Array(decoded.substring(1, decoded.length - 2));

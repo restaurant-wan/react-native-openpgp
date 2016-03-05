@@ -34,8 +34,8 @@
 import enums from '../enums.js';
 import util from '../util.js';
 import Zlib from '../compression/zlib.min.js';
-import RawInflate from '../compression/rawinflate.min.js';
-import RawDeflate from '../compression/rawdeflate.min.js';
+import * as Inflater from '../compression/rawinflate.js';
+import * as Deflater from '../compression/rawdeflate.js';
 
 /**
  * @constructor
@@ -106,7 +106,7 @@ Compressed.prototype.decompress = function () {
       break;
 
     case 'zip':
-      inflate = new RawInflate.Zlib.RawInflate(this.compressed);
+      inflate = new Inflater.RawInflate(this.compressed);
       decompressed = inflate.decompress();
       break;
 
@@ -142,7 +142,7 @@ Compressed.prototype.compress = function () {
 
     case 'zip':
       // - ZIP [RFC1951]
-      deflate = new RawDeflate.Zlib.RawDeflate(uncompressed);
+      deflate = new Deflater.RawDeflate(uncompressed);
       this.compressed = deflate.compress();
       break;
 

@@ -93,13 +93,17 @@ Message.prototype.getSigningKeyIds = function() {
  */
 Message.prototype.decrypt = function(privateKey, sessionKey, password) {
   var keyObj = sessionKey || this.decryptSessionKey(privateKey, password);
+
   if (!keyObj || !util.isUint8Array(keyObj.data) || !util.isString(keyObj.algorithm)) {
     throw new Error('Invalid session key for decryption.');
   }
+
   var symEncryptedPacketlist = this.packets.filterByTag(enums.packet.symmetricallyEncrypted, enums.packet.symEncryptedIntegrityProtected);
+
   if (symEncryptedPacketlist.length !== 0) {
     var symEncryptedPacket = symEncryptedPacketlist[0];
     symEncryptedPacket.decrypt(keyObj.algorithm, keyObj.data);
+
     var resultMsg = new Message(symEncryptedPacket.packets);
     // remove packets after decryption
     symEncryptedPacket.packets = new packet.List();
@@ -142,11 +146,14 @@ Message.prototype.decryptSessionKey = function(privateKey, password) {
       // nothing to decrypt
       return;
     }
+
     var privateKeyPacket = privateKey.getKeyPacket(encryptionKeyIds);
     if (!privateKeyPacket.isDecrypted) {
       throw new Error('Private key is not decrypted.');
     }
+
     var pkESKeyPacketlist = this.packets.filterByTag(enums.packet.publicKeyEncryptedSessionKey);
+
     for (var j = 0; j < pkESKeyPacketlist.length; j++) {
       if (pkESKeyPacketlist[j].publicKeyId.equals(privateKeyPacket.getKeyId())) {
         keyPacket = pkESKeyPacketlist[j];
@@ -154,7 +161,6 @@ Message.prototype.decryptSessionKey = function(privateKey, password) {
         break;
       }
     }
-
   } else {
     throw new Error('No key or password specified.');
   }
@@ -191,6 +197,7 @@ Message.prototype.getFilename = function() {
  */
 Message.prototype.getText = function() {
   var literal = this.packets.findPacket(enums.packet.literal);
+
   if (literal) {
     return literal.getText();
   } else {
@@ -213,6 +220,8 @@ Message.prototype.encrypt = function(keys, passwords) {
   } else {
     throw new Error('No keys or passwords');
   }
+
+  console.log("Algo: " + symAlgo);
 
   var sessionKey = crypto.generateSessionKey(enums.read(enums.symmetric, symAlgo));
   var msg = encryptSessionKey(sessionKey, enums.read(enums.symmetric, symAlgo), keys, passwords);

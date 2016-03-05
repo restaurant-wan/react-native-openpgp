@@ -1,6 +1,6 @@
 'use strict';
 
-var openpgp = typeof window != 'undefined' && window.openpgp ? window.openpgp : require('../../dist/openpgp');
+var openpgp = typeof window != 'undefined' && window.openpgp ? window.openpgp : require('../../src/openpgp');
 
 var keyring = new openpgp.Keyring(),
   chai = require('chai'),
@@ -287,7 +287,7 @@ describe("Keyring", function() {
 
     localstore.storePublic([key]);
     expect(localstore.storage.getItem('remove-prefix-public-keys')).to.be.not.null;
-    
+
     localstore.storePublic([]);
     expect(localstore.storage.getItem('remove-prefix-public-keys')).to.be.null;
   })
@@ -331,4 +331,3 @@ describe("Keyring", function() {
   });
 
 });
-

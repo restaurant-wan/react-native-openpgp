@@ -38,8 +38,33 @@ import * as key from './key.js';
 import config from './config/config.js';
 import util from './util';
 import AsyncProxy from './worker/async_proxy.js';
+import random from './crypto/random.js';
 import es6Promise from 'es6-promise';
 es6Promise.polyfill(); // load ES6 Promises polyfill
+
+
+//////////////////////////////////
+//                              //
+//   Random Value Preparation   //
+//                              //
+//////////////////////////////////
+
+/**
+ * Prepare random values (for React-Native)
+ */
+export function prepareRandomValues() {
+  var promise = new Promise(function(success, failed) {
+    try {
+      random.generateRandomValues().then(() => {
+        success();
+      });
+    } catch(error) {
+      failed();
+    }
+  });
+
+  return promise;
+}
 
 
 //////////////////////////
@@ -87,6 +112,14 @@ export function destroyWorker() {
 
 
 /**
+ * Reads an armored key
+ */
+export function readArmoredKey(armoredKey) {
+  return key.readArmored(armoredKey);
+}
+
+
+/**
  * Generates a new OpenPGP key pair. Currently only supports RSA keys. Primary and subkey will be of same type.
  * @param  {Array<Object>} userIds   array of user IDs e.g. [{ name:'Phil Zimmermann', email:'phil@openpgp.org' }]
  * @param  {String} passphrase       (optional) The passphrase used to encrypt the resulting private key
@@ -116,11 +149,13 @@ export function generateKey({ userIds=[], passphrase, numBits=2048, unlocked=fal
     if (!util.getWebCrypto()) {
       throw new Error('Error generating keypair using js fallback');
     }
+
     // fall back to js keygen in a worker
     if (config.debug) { console.log('Error generating keypair using native WebCrypto... falling back back to js'); }
     return asyncProxy.delegate('generateKey', options);
 
   }).catch(onError.bind(null, 'Error generating keypair'));
+
 }
 
 /**
@@ -155,6 +190,18 @@ export function decryptKey({ privateKey, passphrase }) {
 
 
 /**
+ * Read Message
+ */
+export function readMessage(encrypted) {
+  return messageLib.readArmored(encrypted);
+}
+
+export function readBinaryMessage(encrypted) {
+  return messageLib.read(encrypted);
+}
+
+
+/**
  * Encrypts message text/data with public keys, passwords or both at once. At least either public keys or passwords
  *   must be specified. If private keys are specified, those will be used to sign the message.
  * @param  {String|Uint8Array} data           text/data to be encrypted as JavaScript binary string or Uint8Array
@@ -174,7 +221,6 @@ export function encrypt({ data, publicKeys, privateKeys, passwords, filename, ar
   }
 
   return execute(() => {
-
     let message = createMessage(data, filename);
     if (privateKeys) { // sign the message only if private keys are specified
       message = message.sign(privateKeys);
@@ -214,14 +260,14 @@ export function decrypt({ message, privateKey, publicKeys, sessionKey, password,
   }
 
   return execute(() => {
-
     message = message.decrypt(privateKey, sessionKey, password);
     const result = parseMessage(message, format);
+
     if (publicKeys && result.data) { // verify only if publicKeys are specified
       result.signatures = message.verify(publicKeys);
     }
-    return result;
 
+    return result;
   }, 'Error decrypting message');
 }
 

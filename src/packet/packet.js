@@ -117,6 +117,7 @@ export default {
       0x80) === 0) {
       throw new Error("Error during parsing. This message / key probably does not conform to a valid OpenPGP format.");
     }
+    
     var mypos = position;
     var tag = -1;
     var format = -1;

@@ -45,7 +45,7 @@ export default {
   debug: false,
   show_version: true,
   show_comment: true,
-  versionstring: "OpenPGP.js VERSION",
+  versionstring: "React-Native-OpenPGP.js 0.1",
   commentstring: "http://openpgpjs.org",
   keyserver: "https://keyserver.ubuntu.com",
   node_store: './openpgp.store'

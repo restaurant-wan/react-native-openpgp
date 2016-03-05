@@ -27,9 +27,36 @@
 
 import type_mpi from '../type/mpi.js';
 import util from '../util.js';
-const nodeCrypto = util.detectNode() && require('crypto');
+import * as Isaac from './isaac.js';
+const nodeCrypto = null;
+
+var randomizer = require('react-native-randombytes');
+var isaacson;
 
 export default {
+  /**
+   * Generates random values
+   */
+  generateRandomValues: function () {
+    var promise = new Promise(function(success, failed) {
+      try {
+        randomizer.randomBytes(4096, (err, bytes) => {
+          if (bytes) {
+            isaacson = new Isaac.Isaac();
+            isaacson.seed(bytes);
+            success();
+          } else {
+            failed();
+          }
+        });
+      } catch(error) {
+        failed();
+      }
+    });
+
+    return promise;
+  },
+
   /**
    * Retrieve secure random byte array of the specified length
    * @param {Integer} length Length in bytes to generate
@@ -89,7 +116,9 @@ export default {
     } else if (this.randomBuffer.buffer) {
       this.randomBuffer.get(buf);
     } else {
-      throw new Error('No secure random number generator available.');
+      for (var i = 0; i < buf.length; i++) {
+        buf[i] = Math.floor((isaacson.random() * 255));
+      }
     }
   },
 
