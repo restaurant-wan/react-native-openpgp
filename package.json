@@ -1,6 +1,6 @@
 {
-  "name": "openpgp",
-  "description": "OpenPGP.js is a Javascript implementation of the OpenPGP protocol. This is defined in RFC 4880.",
+  "name": "react-native-openpgp",
+  "description": "React-Native OpenPGP is an OpenPGP.js implementation made to work under React-Native.",
   "version": "2.1.0",
   "license": "LGPL-3.0+",
   "homepage": "http://openpgpjs.org/",
@@ -70,6 +70,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/openpgpjs/openpgpjs"
+    "url": "https://github.com/orhan/react-native-openpgp"
   }
 }
