@@ -11,25 +11,20 @@
     "crypto",
     "pgp",
     "gpg",
-    "openpgp"
+    "openpgp",
+    "react-component",
+    "react-native",
+    "randomBytes",
+    "rng",
+    "ios",
+    "android"
   ],
   "main": "src/openpgp.js",
   "directories": {
     "lib": "src"
   },
-  "files": [
-    "src/",
-    "src/openpgp.js",
-    "src/openpgp.worker.js",
-    "src/openpgp.min.js",
-    "src/openpgp.worker.min.js",
-    "test/unittests.js",
-    "test/general",
-    "test/crypto"
-  ],
   "scripts": {
-    "pretest": "grunt",
-    "test": "grunt test"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "asmcrypto-lite": "^1.0.0",
