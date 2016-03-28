@@ -221,8 +221,6 @@ Message.prototype.encrypt = function(keys, passwords) {
     throw new Error('No keys or passwords');
   }
 
-  console.log("Algo: " + symAlgo);
-
   var sessionKey = crypto.generateSessionKey(enums.read(enums.symmetric, symAlgo));
   var msg = encryptSessionKey(sessionKey, enums.read(enums.symmetric, symAlgo), keys, passwords);
   var packetlist = msg.packets;
