@@ -8,7 +8,7 @@ React-Native-OpenPGP
 
 #### Installation
 
-    npm install --save github:orhan/react-native-openpgp
+    npm install --save react-native-openpgp
     rnpm link react-native-openpgp
 
 Note: Run `npm install -g rnpm` if you haven't installed RNPM (React-Native Package Manager) yet!
