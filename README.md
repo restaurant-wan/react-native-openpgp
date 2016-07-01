@@ -4,36 +4,20 @@ React-Native-OpenPGP
 [React-Native-OpenPGP](http://openpgpjs.org/) is a Javascript implementation of the OpenPGP protocol based on [OpenPGP.js](https://github.com/openpgpjs/openpgpjs).
 
 
-### Getting started
+## Getting started
 
-#### npm
+#### Installation
 
     npm install --save github:orhan/react-native-openpgp
     rnpm link react-native-openpgp
 
 Note: Run `npm install -g rnpm` if you haven't installed RNPM (React-Native Package Manager) yet!
+Alternatively you can add the Android and iOS modules library by following the official guide.
 
-### Usage
+## Usage
 
 ```js
 var openpgp = require('react-native-openpgp');
-```
-
-#### Before Usage
-
-Before using any of the methods below, it is ~~highly recommended~~ **necessary** to generate some random values to seed the randomization algorithm of this library. You don't have to do this for every operation, but you are highly advised to do so.
-
-Basic example:
-```js
-openpgp.prepareRandomValues()
-  .then(() => {
-
-    // YOUR CALLS START HERE!
-    openpgp.encrypt(options).then(function(ciphertext) {
-        encrypted = ciphertext.data;
-    });
-
-  })
 ```
 
 #### Encrypt and decrypt *String* data with a password
