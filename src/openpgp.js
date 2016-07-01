@@ -214,32 +214,41 @@ export function readBinaryMessage(encrypted) {
  * @static
  */
 export function encrypt({ data, publicKeys, privateKeys, passwords, filename, armor=true }) {
+
+
   checkData(data); publicKeys = toArray(publicKeys); privateKeys = toArray(privateKeys); passwords = toArray(passwords);
 
   if (asyncProxy) { // use web worker if available
     return asyncProxy.delegate('encrypt', { data, publicKeys, privateKeys, passwords, filename, armor });
   }
 
+  let self = this;
   var promise = new Promise(function(resolve, reject) {
-    try {
-      let message = createMessage(data, filename);
-      if (privateKeys) { // sign the message only if private keys are specified
-        message = message.sign(privateKeys);
-      }
-      message = message.encrypt(publicKeys, passwords);
+    self.prepareRandomValues()
+      .then(() => {
+        try {
+          let message = createMessage(data, filename);
+          if (privateKeys) { // sign the message only if private keys are specified
+            message = message.sign(privateKeys);
+          }
+          message = message.encrypt(publicKeys, passwords);
 
-      if(armor) {
-        resolve({
-          data: message.armor()
-        });
-      }
+          if(armor) {
+            resolve({
+              data: message.armor()
+            });
+          }
 
-      resolve({
-        message: message
+          resolve({
+            message: message
+          });
+        } catch (error) {
+          reject('Error encrypting message');
+        }
+      })
+      .catch((error) => {
+        reject('Error encrypting message');
       });
-    } catch (error) {
-      reject('Error encrypting message');
-    }
   });
 
   return promise;
@@ -265,20 +274,27 @@ export function decrypt({ message, privateKey, publicKeys, sessionKey, password,
     return asyncProxy.delegate('decrypt', { message, privateKey, publicKeys, sessionKey, password, format });
   }
 
+  let self = this;
   var promise = new Promise(function(resolve, reject) {
-    try {
-      message = message.decrypt(privateKey, sessionKey, password);
-      const result = parseMessage(message, format);
+    self.prepareRandomValues()
+      .then(() => {
+        try {
+          message = message.decrypt(privateKey, sessionKey, password);
+          const result = parseMessage(message, format);
 
-      if (publicKeys && result.data) { // verify only if publicKeys are specified
-        result.signatures = message.verify(publicKeys);
-      }
+          if (publicKeys && result.data) { // verify only if publicKeys are specified
+            result.signatures = message.verify(publicKeys);
+          }
 
-      resolve(result);
-    }
-    catch (error) {
-      reject('Error decrypting message');
-    }
+          resolve(result);
+        }
+        catch (error) {
+          reject('Error decrypting message');
+        }
+      })
+      .catch((error) => {
+        reject('Error decrypting message');
+      });
   });
 
   return promise;
@@ -308,23 +324,30 @@ export function sign({ data, privateKeys, armor=true }) {
     return asyncProxy.delegate('sign', { data, privateKeys, armor });
   }
 
+  let self = this;
   var promise = new Promise(function(resolve, reject) {
-    try {
-      const cleartextMessage = new cleartext.CleartextMessage(data);
-      cleartextMessage.sign(privateKeys);
+    self.prepareRandomValues()
+      .then(() => {
+        try {
+          const cleartextMessage = new cleartext.CleartextMessage(data);
+          cleartextMessage.sign(privateKeys);
 
-      if(armor) {
-        resolve({
-          data: cleartextMessage.armor()
-        });
-      }
-      resolve({
-        message: cleartextMessage
+          if(armor) {
+            resolve({
+              data: cleartextMessage.armor()
+            });
+          }
+          resolve({
+            message: cleartextMessage
+          });
+        }
+        catch (error) {
+          reject('Error signing cleartext message');
+        }
+      })
+      .catch((error) => {
+        reject('Error signing cleartext message');
       });
-    }
-    catch (error) {
-      reject('Error signing cleartext message');
-    }
   });
 
   return promise;
