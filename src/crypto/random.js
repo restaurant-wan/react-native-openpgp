@@ -31,7 +31,7 @@ import * as Isaac from './isaac.js';
 const nodeCrypto = null;
 
 var randomizer = require('react-native-randombytes');
-var isaacson;
+var isaacson = new Isaac.Isaac();
 
 export default {
   /**
@@ -42,7 +42,6 @@ export default {
       try {
         randomizer.randomBytes(4096, (err, bytes) => {
           if (bytes) {
-            isaacson = new Isaac.Isaac();
             isaacson.seed(bytes);
             success();
           } else {
