@@ -243,11 +243,11 @@ export function encrypt({ data, publicKeys, privateKeys, passwords, filename, ar
             message: message
           });
         } catch (error) {
-          reject('Error encrypting message');
+          reject(error);
         }
       })
       .catch((error) => {
-        reject('Error encrypting message');
+        reject(error);
       });
   });
 
@@ -289,11 +289,11 @@ export function decrypt({ message, privateKey, publicKeys, sessionKey, password,
           resolve(result);
         }
         catch (error) {
-          reject('Error decrypting message');
+          reject(error);
         }
       })
       .catch((error) => {
-        reject('Error decrypting message');
+        reject(error);
       });
   });
 
@@ -332,21 +332,20 @@ export function sign({ data, privateKeys, armor=true }) {
           const cleartextMessage = new cleartext.CleartextMessage(data);
           cleartextMessage.sign(privateKeys);
 
-          if(armor) {
+          if (armor) {
             resolve({
               data: cleartextMessage.armor()
             });
           }
-          resolve({
-            message: cleartextMessage
-          });
+
+          resolve({message: cleartextMessage});
         }
         catch (error) {
-          reject('Error signing cleartext message');
+          reject(error);
         }
       })
       .catch((error) => {
-        reject('Error signing cleartext message');
+        reject(error);
       });
   });
 
