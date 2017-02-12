@@ -30,17 +30,12 @@ options = {
   passwords: ['secret stuff'] // multiple passwords possible
 };
 
-// Because of the way the library works (random values have to be generated natively!),
-// it is always highly recommended to call this method before doing any actual work!
-openpgp.prepareRandomValues()
-  .then(() => {
-    openpgp.encrypt(options)
-      .then((ciphertext) => {
-        encrypted = ciphertext.data; // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
-      })
-      .catch((error) => {
-        console.log("Something went wrong: " + error);
-      });
+openpgp.encrypt(options)
+  .then((ciphertext) => {
+    encrypted = ciphertext.data; // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
+  })
+  .catch((error) => {
+    console.log("Something went wrong: " + error);
   });
 ```
 
@@ -50,17 +45,12 @@ options = {
   password: 'secret stuff'                         // decrypt with password
 };
 
-// Because of the way the library works (random values have to be generated natively!),
-// it is always highly recommended to call this method before doing any actual work!
-openpgp.prepareRandomValues()
-  .then(() => {
-    openpgp.decrypt(options)
-      .then((plaintext) => {
-        return plaintext.data; // 'Hello, World!'
-      })
-      .catch((error) => {
-        console.log("Something went wrong: " + error);
-      });
+openpgp.decrypt(options)
+  .then((plaintext) => {
+    return plaintext.data; // 'Hello, World!'
+  })
+  .catch((error) => {
+    console.log("Something went wrong: " + error);
   });
 ```
 
@@ -79,17 +69,12 @@ options = {
   armor: false                                        // don't ASCII armor
 };
 
-// Because of the way the library works (random values have to be generated natively!),
-// it is always highly recommended to call this method before doing any actual work!
-openpgp.prepareRandomValues()
-  .then(() => {
-    openpgp.encrypt(options)
-      .then((ciphertext) => {
-        encrypted = ciphertext.message.packets.write(); // get raw encrypted packets as Uint8Array
-      })
-      .catch((error) => {
-        console.log("Something went wrong: " + error);
-      });
+openpgp.encrypt(options)
+  .then((ciphertext) => {
+    encrypted = ciphertext.message.packets.write(); // get raw encrypted packets as Uint8Array
+  })
+  .catch((error) => {
+    console.log("Something went wrong: " + error);
   });
 ```
 
@@ -101,17 +86,12 @@ options = {
   format: 'binary'                                      // output as Uint8Array
 };
 
-// Because of the way the library works (random values have to be generated natively!),
-// it is always highly recommended to call this method before doing any actual work!
-openpgp.prepareRandomValues()
-  .then(() => {
-    openpgp.decrypt(options)
-      .then((plaintext) => {
-        return plaintext.data // Uint8Array([0x01, 0x01, 0x01])
-      })
-      .catch((error) => {
-        console.log("Something went wrong: " + error);
-      });
+openpgp.decrypt(options)
+  .then((plaintext) => {
+    return plaintext.data // Uint8Array([0x01, 0x01, 0x01])
+  })
+  .catch((error) => {
+    console.log("Something went wrong: " + error);
   });
 ```
 
@@ -124,18 +104,13 @@ var options = {
   passphrase: 'super long and hard to guess secret'         // protects the private key
 };
 
-// Because of the way the library works (random values have to be generated natively!),
-// it is always highly recommended to call this method before doing any actual work!
-openpgp.prepareRandomValues()
-  .then(() => {
-    openpgp.generateKey(options)
-      .then((key) => {
-        var privkey = key.privateKeyArmored; // '-----BEGIN PGP PRIVATE KEY BLOCK ... '
-        var pubkey = key.publicKeyArmored;   // '-----BEGIN PGP PUBLIC KEY BLOCK ... '
-      })
-      .catch((error) => {
-        console.log("Something went wrong: " + error);
-      });
+openpgp.generateKey(options)
+  .then((key) => {
+    var privkey = key.privateKeyArmored; // '-----BEGIN PGP PRIVATE KEY BLOCK ... '
+    var pubkey = key.publicKeyArmored;   // '-----BEGIN PGP PUBLIC KEY BLOCK ... '
+  })
+  .catch((error) => {
+    console.log("Something went wrong: " + error);
   });
 
 ```
