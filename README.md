@@ -50,7 +50,7 @@ options = {
   password: 'secret stuff'                         // decrypt with password
 };
 
-// Because of the way the library works (random values have to be generated on natively!),
+// Because of the way the library works (random values have to be generated natively!),
 // it is always highly recommended to call this method before doing any actual work!
 openpgp.prepareRandomValues()
   .then(() => {
@@ -79,7 +79,7 @@ options = {
   armor: false                                        // don't ASCII armor
 };
 
-// Because of the way the library works (random values have to be generated on natively!),
+// Because of the way the library works (random values have to be generated natively!),
 // it is always highly recommended to call this method before doing any actual work!
 openpgp.prepareRandomValues()
   .then(() => {
@@ -101,7 +101,7 @@ options = {
   format: 'binary'                                      // output as Uint8Array
 };
 
-// Because of the way the library works (random values have to be generated on natively!),
+// Because of the way the library works (random values have to be generated natively!),
 // it is always highly recommended to call this method before doing any actual work!
 openpgp.prepareRandomValues()
   .then(() => {
@@ -124,7 +124,7 @@ var options = {
   passphrase: 'super long and hard to guess secret'         // protects the private key
 };
 
-// Because of the way the library works (random values have to be generated on natively!),
+// Because of the way the library works (random values have to be generated natively!),
 // it is always highly recommended to call this method before doing any actual work!
 openpgp.prepareRandomValues()
   .then(() => {
