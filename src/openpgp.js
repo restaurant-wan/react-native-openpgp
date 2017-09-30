@@ -214,9 +214,11 @@ export function readBinaryMessage(encrypted) {
  * @static
  */
 export function encrypt({ data, publicKeys, privateKeys, passwords, filename, armor=true }) {
+  checkData(data);
 
-
-  checkData(data); publicKeys = toArray(publicKeys); privateKeys = toArray(privateKeys); passwords = toArray(passwords);
+  publicKeys = toArray(publicKeys);
+  privateKeys = toArray(privateKeys);
+  passwords = toArray(passwords);
 
   if (asyncProxy) { // use web worker if available
     return asyncProxy.delegate('encrypt', { data, publicKeys, privateKeys, passwords, filename, armor });
